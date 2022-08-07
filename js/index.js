@@ -19,13 +19,13 @@ async function onConnectButtonClick() {
                     addSerial(inputValue);
                 }
             } catch (error) {
-                addSerial("Error: Read" + error + "\n");
+                addSerial("[ERROR: Read] " + error + "\n");
             } finally {
                 reader.releaseLock();
             }
         }
     } catch (error) {
-        addSerial("Error: Open" + error + "\n");
+        addSerial("[ERROR: Open] " + error + "\n");
     }
 }
 
