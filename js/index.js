@@ -44,3 +44,7 @@ async function sendSerial() {
     await writer.write(encoder.encode(text + "\n"));
     writer.releaseLock();
 }
+
+async function closePort(){
+    await port.close();
+}
