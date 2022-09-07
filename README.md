@@ -3,7 +3,7 @@ This is a web serial terminal with the same functionality as the arduino serial 
 
 ※Available in "google chrome browser".
 
-deploy github page: https://wiccidu.github.io/mechatronics-serial-terminal/
+Deploy to github page: https://wiccidu.github.io/mechatronics-serial-terminal/
 
 ## Usage
 1. Select "Console" or "plotGraph" from the menu bar at the top. 
