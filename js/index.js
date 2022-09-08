@@ -3,8 +3,8 @@ let port, readlock;
 let receivedCount = 0; 
 
 // for Serial setting sampleing
-const freq=200; //[Hz]
 let nowValue = 0;
+let nowSamplingRate = 0;
 
 // for get using element
 const outputArea = document.getElementById('outputArea');
@@ -38,6 +38,7 @@ async function onConnectButtonClick() {
                         break;
                     }
                     const inputValue = new TextDecoder().decode(value);
+                    addOutputArea(inputValue);
 
                     // readbuffにとりあえずいれて、改行があった場合、値を取り出す処理を回す
                     readbuff+=inputValue;
@@ -45,15 +46,16 @@ async function onConnectButtonClick() {
                         const n = readbuff.indexOf('\n')
                         const v = readbuff.substring(0, n)//vが値
                         readbuff = readbuff.substring(n+1, readbuff.length)//残りの全てをreadbuffに詰めなおす
-                        addOutputArea(v);
                         addRecord(v)
                         nowValue = v
-                        // receivedCount = (receivedCount + 1) % freq;
-                        // if (receivedCount === 0) {
-                        //     endTime = Date.now();
-                        //     addOutputArea("duration:"+String(endTime-startTime)+"[msec],")
-                        //     startTime = endTime;
-                        // }
+
+                        const countRateFactor = 300;
+                        receivedCount = (receivedCount + 1) % countRateFactor;
+                        if (receivedCount === 0) {
+                            endTime = Date.now();
+                            updateSamplingRateSpan("- ReceivedSamplingRate: "+String(Math.round(countRateFactor/(endTime-startTime)*1000))+"[Hz],")
+                            startTime = endTime;
+                        }
                     }
                 }
             } catch (error) {
@@ -77,6 +79,10 @@ function addOutputArea(msg) {
   }
   outputArea.value = outputAreaBuffArr.join('');
   outputArea.scrollTop = outputArea.scrollHeight;
+}
+
+function updateSamplingRateSpan(v){
+    document.getElementById("samplingRateSpan").innerHTML = v
 }
 
 async function sendSerial() {
