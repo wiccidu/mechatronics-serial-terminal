@@ -100,9 +100,13 @@ function onRecording(){
   if (rb.innerText === "Recording") {
     clearRecord()
     rb.innerText = "Finish Recording"
+    rb.classList.add("btn-danger")
+    rb.classList.remove("btn-success")
   } else {
     saveRecord()
     rb.innerText = "Recording"
+    rb.classList.add("btn-success")
+    rb.classList.remove("btn-danger")
   }
 }
 
