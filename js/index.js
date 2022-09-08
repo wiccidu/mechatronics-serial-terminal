@@ -97,6 +97,7 @@ async function sendSerial() {
 
 async function closePort(){
     readlock = false;
+    location.reload();
 }
 
 // -------- Recording ----------
