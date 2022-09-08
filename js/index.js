@@ -17,6 +17,9 @@ const outputAreaBuffLineNumber = 100;
 let startTime = Date.now();
 let endTime = Date.now();
 
+// for record
+let recardArr = []
+
 async function onConnectButtonClick() {
     try {
         readlock = true;
@@ -43,6 +46,7 @@ async function onConnectButtonClick() {
                         const v = readbuff.substring(0, n)//vが値
                         readbuff = readbuff.substring(n+1, readbuff.length)//残りの全てをreadbuffに詰めなおす
                         addOutputArea(v);
+                        addRecord(v)
                         nowValue = v
                         // receivedCount = (receivedCount + 1) % freq;
                         // if (receivedCount === 0) {
@@ -76,7 +80,7 @@ function addOutputArea(msg) {
 }
 
 async function sendSerial() {
-    var text = document.getElementById('sendInput').value;
+    const text = document.getElementById('sendInput').value;
     document.getElementById('sendInput').value = "";
 
     const encoder = new TextEncoder();
@@ -88,6 +92,41 @@ async function sendSerial() {
 async function closePort(){
     readlock = false;
 }
+
+// -------- Recording ----------
+
+function onRecording(){
+  const rb = document.getElementById('recordingBtn')
+  if (rb.innerText === "Recording") {
+    clearRecord()
+    rb.innerText = "Finish Recording"
+  } else {
+    saveRecord()
+    rb.innerText = "Recording"
+  }
+}
+
+function clearRecord(){
+  recardArr = []
+}
+
+function addRecord(s){
+  recardArr.push(s)
+}
+
+function saveRecord(){
+  // get datetime
+  let filename = new Date().toJSON()+".txt"
+
+  // save
+  let blob = new Blob(recardArr,{type:"text/plan"});
+  let link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = filename;
+  link.click(); 
+}
+
+// -------- PlotGraph ----------
 
 const config = {
   type: 'line',
